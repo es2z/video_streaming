@@ -203,3 +203,11 @@ INFO 2025-09-22 00:26:45,389 scanner Starting initial file scan (with WebP thumb
 INFO 2025-09-22 00:26:45,390 scanner Starting periodic scan loop (interval=21600 sec) with WebP thumbnails...
 INFO 2025-09-22 00:26:45,390 scanner Periodic scan tick.
 INFO 2025-09-22 00:26:45,404 autoreload Watching for file changes with StatReloader
+INFO 2025-09-22 00:26:46,389 utils Added file: 220702_loop.mp4
+ERROR 2025-09-22 00:26:46,390 utils Error processing file C:\dev\video_streaming\media\videos\220702_loop.mp4: (1062, "Duplicate entry '5b59aa4dfe2faeb2c0cddcbd6a629874d92a318f328e96860a805ca6f8e05aee' for key 'files.file_path_hash'")
+INFO 2025-09-22 00:26:46,398 utils Scan completed: 3 scanned, 1 added, 0 updated, 0 duplicates
+INFO 2025-09-22 00:26:46,399 utils Marked 0 files as duplicates
+INFO 2025-09-22 00:26:46,399 utils Scan completed: 3 scanned, 0 added, 0 updated, 0 duplicates
+INFO 2025-09-22 00:26:46,399 scanner Periodic scan tick finished.
+INFO 2025-09-22 00:26:46,400 utils Marked 0 files as duplicates
+INFO 2025-09-22 00:26:46,400 scanner Initial file scan finished.
