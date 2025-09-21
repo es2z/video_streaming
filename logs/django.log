@@ -8,3 +8,198 @@ INFO 2025-09-21 23:25:44,313 apps Starting initial file scan...
 ERROR 2025-09-21 23:25:44,320 apps Initial scan failed: (1146, "Table 'video_streaming_db.scan_history' doesn't exist")
 INFO 2025-09-21 23:25:44,532 apps Starting initial file scan...
 ERROR 2025-09-21 23:25:44,534 apps Initial scan failed: (1146, "Table 'video_streaming_db.scan_history' doesn't exist")
+INFO 2025-09-21 23:42:51,757 autoreload Watching for file changes with StatReloader
+INFO 2025-09-21 23:42:56,550 apps Starting initial file scan...
+ERROR 2025-09-21 23:42:56,556 apps Initial scan failed: (1146, "Table 'video_streaming_db.scan_history' doesn't exist")
+INFO 2025-09-21 23:42:56,757 apps Starting initial file scan...
+ERROR 2025-09-21 23:42:56,763 apps Initial scan failed: (1146, "Table 'video_streaming_db.scan_history' doesn't exist")
+INFO 2025-09-21 23:43:59,072 autoreload C:\dev\video_streaming\backend\videos\views.py changed, reloading.
+INFO 2025-09-21 23:43:59,369 autoreload Watching for file changes with StatReloader
+INFO 2025-09-21 23:44:03,002 autoreload Watching for file changes with StatReloader
+INFO 2025-09-21 23:44:07,806 apps Starting initial file scan...
+ERROR 2025-09-21 23:44:07,811 apps Initial scan failed: (1146, "Table 'video_streaming_db.scan_history' doesn't exist")
+INFO 2025-09-21 23:44:07,991 apps Starting initial file scan...
+ERROR 2025-09-21 23:44:07,997 apps Initial scan failed: (1146, "Table 'video_streaming_db.scan_history' doesn't exist")
+INFO 2025-09-21 23:44:29,018 autoreload C:\dev\video_streaming\backend\videos\views.py changed, reloading.
+INFO 2025-09-21 23:44:29,327 autoreload Watching for file changes with StatReloader
+INFO 2025-09-21 23:44:34,324 apps Starting initial file scan...
+ERROR 2025-09-21 23:44:34,330 apps Initial scan failed: (1146, "Table 'video_streaming_db.scan_history' doesn't exist")
+INFO 2025-09-21 23:44:49,268 autoreload C:\dev\video_streaming\backend\videos\models.py changed, reloading.
+INFO 2025-09-21 23:44:49,582 autoreload Watching for file changes with StatReloader
+INFO 2025-09-21 23:44:55,306 autoreload Watching for file changes with StatReloader
+INFO 2025-09-21 23:45:00,108 apps Starting initial file scan...
+ERROR 2025-09-21 23:45:00,113 apps Initial scan failed: (1146, "Table 'video_streaming_db.scan_history' doesn't exist")
+INFO 2025-09-21 23:45:00,297 apps Starting initial file scan...
+ERROR 2025-09-21 23:45:00,299 apps Initial scan failed: (1146, "Table 'video_streaming_db.scan_history' doesn't exist")
+INFO 2025-09-21 23:53:12,434 autoreload Watching for file changes with StatReloader
+INFO 2025-09-21 23:53:17,235 apps Starting initial file scan...
+ERROR 2025-09-21 23:53:17,240 apps Initial scan failed: (1146, "Table 'video_streaming_db.scan_history' doesn't exist")
+INFO 2025-09-21 23:53:17,435 apps Starting initial file scan...
+ERROR 2025-09-21 23:53:17,437 apps Initial scan failed: (1146, "Table 'video_streaming_db.scan_history' doesn't exist")
+INFO 2025-09-21 23:54:28,404 autoreload Watching for file changes with StatReloader
+INFO 2025-09-21 23:54:33,210 apps Starting initial file scan...
+ERROR 2025-09-21 23:54:33,214 apps Initial scan failed: (1146, "Table 'video_streaming_db.scan_history' doesn't exist")
+INFO 2025-09-21 23:54:33,395 apps Starting initial file scan...
+ERROR 2025-09-21 23:54:33,397 apps Initial scan failed: (1146, "Table 'video_streaming_db.scan_history' doesn't exist")
+INFO 2025-09-21 23:56:57,443 autoreload Watching for file changes with StatReloader
+INFO 2025-09-21 23:57:02,248 apps Starting initial file scan...
+ERROR 2025-09-21 23:57:02,253 apps Initial scan failed: (1146, "Table 'video_streaming_db.scan_history' doesn't exist")
+INFO 2025-09-21 23:57:02,436 apps Starting initial file scan...
+ERROR 2025-09-21 23:57:02,438 apps Initial scan failed: (1146, "Table 'video_streaming_db.scan_history' doesn't exist")
+INFO 2025-09-21 23:58:02,596 autoreload C:\dev\video_streaming\backend\videos\apps.py changed, reloading.
+INFO 2025-09-21 23:58:02,918 autoreload Watching for file changes with StatReloader
+INFO 2025-09-21 23:58:07,918 apps Starting initial file scan...
+ERROR 2025-09-21 23:58:07,921 apps Initial scan failed: (1146, "Table 'video_streaming_db.scan_history' doesn't exist")
+INFO 2025-09-21 23:58:32,023 autoreload C:\dev\video_streaming\backend\videos\apps.py changed, reloading.
+INFO 2025-09-21 23:58:32,337 autoreload Watching for file changes with StatReloader
+INFO 2025-09-21 23:58:40,765 autoreload C:\dev\video_streaming\backend\videos\apps.py changed, reloading.
+WARNING 2025-09-21 23:58:41,079 apps Database not ready. Skip initial/periodic scans.
+INFO 2025-09-21 23:58:41,092 autoreload Watching for file changes with StatReloader
+WARNING 2025-09-21 23:58:43,450 apps Database not ready. Skip initial/periodic scans.
+INFO 2025-09-21 23:58:43,462 autoreload Watching for file changes with StatReloader
+INFO 2025-09-22 00:00:07,184 autoreload C:\dev\video_streaming\backend\videos\models.py changed, reloading.
+WARNING 2025-09-22 00:00:07,498 apps Database not ready. Skip initial/periodic scans.
+INFO 2025-09-22 00:00:07,511 autoreload Watching for file changes with StatReloader
+INFO 2025-09-22 00:01:39,491 autoreload C:\dev\video_streaming\backend\videos\models.py changed, reloading.
+WARNING 2025-09-22 00:01:39,839 apps Database not ready. Skip initial/periodic scans.
+INFO 2025-09-22 00:01:39,854 autoreload Watching for file changes with StatReloader
+WARNING 2025-09-22 00:07:45,010 apps Database not ready. Skip initial/periodic scans.
+INFO 2025-09-22 00:07:45,023 autoreload Watching for file changes with StatReloader
+INFO 2025-09-22 00:10:15,610 autoreload C:\dev\video_streaming\backend\videos\models.py changed, reloading.
+WARNING 2025-09-22 00:10:15,955 apps Database not ready. Skip initial/periodic scans.
+INFO 2025-09-22 00:10:15,969 autoreload Watching for file changes with StatReloader
+WARNING 2025-09-22 00:10:28,988 apps Database not ready. Skip initial/periodic scans.
+INFO 2025-09-22 00:10:29,001 autoreload Watching for file changes with StatReloader
+INFO 2025-09-22 00:13:52,110 autoreload C:\dev\video_streaming\backend\videos\apps.py changed, reloading.
+INFO 2025-09-22 00:13:52,436 apps Database ready at startup; starting initial and periodic scans.
+INFO 2025-09-22 00:13:54,092 apps Database ready at startup; starting initial and periodic scans.
+WARNING 2025-09-22 00:13:54,202 apps No scan entrypoints found (initial_scan / periodic_scan). Skipping automatic scan startup.
+INFO 2025-09-22 00:13:54,214 autoreload Watching for file changes with StatReloader
+INFO 2025-09-22 00:20:44,258 autoreload C:\dev\video_streaming\backend\videos\utils.py changed, reloading.
+INFO 2025-09-22 00:20:44,612 apps Database ready at startup; starting initial and periodic scans.
+WARNING 2025-09-22 00:20:44,700 apps No scan entrypoints found (initial_scan / periodic_scan). Skipping automatic scan startup.
+INFO 2025-09-22 00:20:44,713 autoreload Watching for file changes with StatReloader
+INFO 2025-09-22 00:20:46,902 autoreload C:\dev\video_streaming\backend\videos\utils.py changed, reloading.
+INFO 2025-09-22 00:20:47,200 apps Database ready at startup; starting initial and periodic scans.
+INFO 2025-09-22 00:20:47,259 apps Starting scan function: initial_scan
+INFO 2025-09-22 00:20:47,259 apps Initial scan thread started.
+INFO 2025-09-22 00:20:47,259 apps Starting scan function: periodic_scan
+INFO 2025-09-22 00:20:47,260 apps Periodic scan thread started.
+INFO 2025-09-22 00:20:47,260 scanner Starting initial file scan...
+INFO 2025-09-22 00:20:47,261 scanner Starting periodic scan loop (interval=21600 sec)...
+INFO 2025-09-22 00:20:47,261 scanner Periodic scan tick.
+INFO 2025-09-22 00:20:47,274 autoreload Watching for file changes with StatReloader
+ERROR 2025-09-22 00:20:47,377 utils Error calculating MD5 for C:\dev\video_streaming\media\videos\p.mp4: [WinError 32] プロセスはファイルにアクセスできません。別のプロセスが使用中です。: 'C:\\dev\\video_streaming\\media\\videos\\p.mp4.temp.mp4'
+INFO 2025-09-22 00:20:48,587 utils Added file: p.mp4
+ERROR 2025-09-22 00:20:48,588 utils Error processing file C:\dev\video_streaming\media\videos\p.mp4: (1062, "Duplicate entry '5332834688c54f9cda6adbee76cf66cb581eaaf40c175b2d43de6c128d89edc9' for key 'files.file_path_hash'")
+INFO 2025-09-22 00:20:48,598 utils Scan completed: 1 scanned, 1 added, 0 updated, 0 duplicates
+INFO 2025-09-22 00:20:48,599 utils Scan completed: 1 scanned, 0 added, 0 updated, 0 duplicates
+INFO 2025-09-22 00:20:48,600 utils Marked 0 files as duplicates
+INFO 2025-09-22 00:20:48,600 utils Marked 0 files as duplicates
+INFO 2025-09-22 00:20:48,600 scanner Periodic scan tick finished.
+INFO 2025-09-22 00:20:48,600 scanner Initial file scan finished.
+INFO 2025-09-22 00:24:25,227 autoreload C:\dev\video_streaming\backend\backend\settings.py changed, reloading.
+INFO 2025-09-22 00:24:25,537 apps Database ready at startup; starting initial and periodic scans.
+INFO 2025-09-22 00:24:25,587 apps Starting scan function: initial_scan
+INFO 2025-09-22 00:24:25,587 apps Initial scan thread started.
+INFO 2025-09-22 00:24:25,587 apps Starting scan function: periodic_scan
+INFO 2025-09-22 00:24:25,587 apps Periodic scan thread started.
+INFO 2025-09-22 00:24:25,589 scanner Starting initial file scan...
+INFO 2025-09-22 00:24:25,589 scanner Starting periodic scan loop (interval=21600 sec)...
+INFO 2025-09-22 00:24:25,589 scanner Periodic scan tick.
+INFO 2025-09-22 00:24:25,602 autoreload Watching for file changes with StatReloader
+INFO 2025-09-22 00:24:25,621 utils Scan completed: 1 scanned, 0 added, 0 updated, 0 duplicates
+INFO 2025-09-22 00:24:25,622 utils Marked 0 files as duplicates
+INFO 2025-09-22 00:24:25,622 scanner Initial file scan finished.
+INFO 2025-09-22 00:24:25,622 utils Scan completed: 1 scanned, 0 added, 0 updated, 0 duplicates
+INFO 2025-09-22 00:24:25,623 utils Marked 0 files as duplicates
+INFO 2025-09-22 00:24:25,623 scanner Periodic scan tick finished.
+INFO 2025-09-22 00:24:31,003 autoreload C:\dev\video_streaming\backend\videos\utils.py changed, reloading.
+INFO 2025-09-22 00:24:31,310 apps Database ready at startup; starting initial and periodic scans.
+INFO 2025-09-22 00:24:31,368 apps Starting scan function: initial_scan
+INFO 2025-09-22 00:24:31,368 apps Initial scan thread started.
+INFO 2025-09-22 00:24:31,368 apps Starting scan function: periodic_scan
+INFO 2025-09-22 00:24:31,368 apps Periodic scan thread started.
+INFO 2025-09-22 00:24:31,369 scanner Starting initial file scan...
+INFO 2025-09-22 00:24:31,370 scanner Starting periodic scan loop (interval=21600 sec)...
+INFO 2025-09-22 00:24:31,370 scanner Periodic scan tick.
+INFO 2025-09-22 00:24:31,382 autoreload Watching for file changes with StatReloader
+INFO 2025-09-22 00:24:31,403 utils Scan completed: 1 scanned, 0 added, 0 updated, 0 duplicates
+INFO 2025-09-22 00:24:31,403 utils Scan completed: 1 scanned, 0 added, 0 updated, 0 duplicates
+INFO 2025-09-22 00:24:31,404 utils Marked 0 files as duplicates
+INFO 2025-09-22 00:24:31,404 utils Marked 0 files as duplicates
+INFO 2025-09-22 00:24:31,405 scanner Initial file scan finished.
+INFO 2025-09-22 00:24:31,405 scanner Periodic scan tick finished.
+INFO 2025-09-22 00:24:43,947 autoreload C:\dev\video_streaming\backend\videos\scanner.py changed, reloading.
+INFO 2025-09-22 00:24:44,246 apps Database ready at startup; starting initial and periodic scans.
+INFO 2025-09-22 00:24:44,301 apps Starting scan function: initial_scan
+INFO 2025-09-22 00:24:44,301 apps Initial scan thread started.
+INFO 2025-09-22 00:24:44,301 apps Starting scan function: periodic_scan
+INFO 2025-09-22 00:24:44,301 apps Periodic scan thread started.
+INFO 2025-09-22 00:24:44,301 scanner Starting initial file scan (with WebP thumbnails)...
+INFO 2025-09-22 00:24:44,302 scanner Starting periodic scan loop (interval=21600 sec) with WebP thumbnails...
+INFO 2025-09-22 00:24:44,303 scanner Periodic scan tick.
+INFO 2025-09-22 00:24:44,316 autoreload Watching for file changes with StatReloader
+INFO 2025-09-22 00:24:44,335 utils Scan completed: 1 scanned, 0 added, 0 updated, 0 duplicates
+INFO 2025-09-22 00:24:44,336 utils Marked 0 files as duplicates
+INFO 2025-09-22 00:24:44,336 scanner Periodic scan tick finished.
+INFO 2025-09-22 00:24:44,337 utils Scan completed: 1 scanned, 0 added, 0 updated, 0 duplicates
+INFO 2025-09-22 00:24:44,337 utils Marked 0 files as duplicates
+INFO 2025-09-22 00:24:44,337 scanner Initial file scan finished.
+INFO 2025-09-22 00:25:03,741 apps Database ready at startup; starting initial and periodic scans.
+INFO 2025-09-22 00:25:03,787 apps Starting scan function: initial_scan
+INFO 2025-09-22 00:25:03,787 apps Initial scan thread started.
+INFO 2025-09-22 00:25:03,787 apps Starting scan function: periodic_scan
+INFO 2025-09-22 00:25:03,787 apps Periodic scan thread started.
+INFO 2025-09-22 00:25:03,788 scanner Starting initial file scan (with WebP thumbnails)...
+INFO 2025-09-22 00:25:03,788 scanner Starting periodic scan loop (interval=21600 sec) with WebP thumbnails...
+INFO 2025-09-22 00:25:03,788 scanner Periodic scan tick.
+INFO 2025-09-22 00:25:03,805 utils Scan completed: 0 scanned, 0 added, 0 updated, 0 duplicates
+INFO 2025-09-22 00:25:03,806 autoreload Watching for file changes with StatReloader
+INFO 2025-09-22 00:25:03,807 utils Marked 0 files as duplicates
+INFO 2025-09-22 00:25:03,807 utils Scan completed: 0 scanned, 0 added, 0 updated, 0 duplicates
+INFO 2025-09-22 00:25:03,807 scanner Initial file scan finished.
+INFO 2025-09-22 00:25:03,808 utils Marked 0 files as duplicates
+INFO 2025-09-22 00:25:03,808 scanner Periodic scan tick finished.
+INFO 2025-09-22 00:25:21,074 apps Database ready at startup; starting initial and periodic scans.
+INFO 2025-09-22 00:25:21,121 apps Starting scan function: initial_scan
+INFO 2025-09-22 00:25:21,121 apps Initial scan thread started.
+INFO 2025-09-22 00:25:21,121 apps Starting scan function: periodic_scan
+INFO 2025-09-22 00:25:21,121 apps Periodic scan thread started.
+INFO 2025-09-22 00:25:21,121 scanner Starting initial file scan (with WebP thumbnails)...
+INFO 2025-09-22 00:25:21,122 scanner Starting periodic scan loop (interval=21600 sec) with WebP thumbnails...
+INFO 2025-09-22 00:25:21,123 scanner Periodic scan tick.
+INFO 2025-09-22 00:25:21,134 autoreload Watching for file changes with StatReloader
+INFO 2025-09-22 00:25:21,154 utils Scan completed: 1 scanned, 0 added, 0 updated, 0 duplicates
+INFO 2025-09-22 00:25:21,155 utils Scan completed: 1 scanned, 0 added, 0 updated, 0 duplicates
+INFO 2025-09-22 00:25:21,156 utils Marked 0 files as duplicates
+INFO 2025-09-22 00:25:21,156 scanner Initial file scan finished.
+INFO 2025-09-22 00:25:21,156 utils Marked 0 files as duplicates
+INFO 2025-09-22 00:25:21,156 scanner Periodic scan tick finished.
+INFO 2025-09-22 00:25:47,244 apps Database ready at startup; starting initial and periodic scans.
+INFO 2025-09-22 00:25:47,290 apps Starting scan function: initial_scan
+INFO 2025-09-22 00:25:47,290 apps Initial scan thread started.
+INFO 2025-09-22 00:25:47,291 apps Starting scan function: periodic_scan
+INFO 2025-09-22 00:25:47,291 apps Periodic scan thread started.
+INFO 2025-09-22 00:25:47,291 scanner Starting initial file scan (with WebP thumbnails)...
+INFO 2025-09-22 00:25:47,293 scanner Starting periodic scan loop (interval=21600 sec) with WebP thumbnails...
+INFO 2025-09-22 00:25:47,293 scanner Periodic scan tick.
+INFO 2025-09-22 00:25:47,306 autoreload Watching for file changes with StatReloader
+ERROR 2025-09-22 00:25:47,360 utils Error calculating MD5 for C:\dev\video_streaming\media\videos\gxx.mp4: [WinError 32] プロセスはファイルにアクセスできません。別のプロセスが使用中です。: 'C:\\dev\\video_streaming\\media\\videos\\gxx.mp4.temp.mp4'
+INFO 2025-09-22 00:25:48,603 utils Added file: gxx.mp4
+INFO 2025-09-22 00:25:48,612 utils Scan completed: 2 scanned, 1 added, 0 updated, 0 duplicates
+INFO 2025-09-22 00:25:48,614 utils Marked 0 files as duplicates
+INFO 2025-09-22 00:25:48,614 scanner Initial file scan finished.
+ERROR 2025-09-22 00:25:48,615 utils Error processing file C:\dev\video_streaming\media\videos\gxx.mp4: (1062, "Duplicate entry 'c5461751f204fe8a6d15a0362b34462a83dc64799424a495dadf3cde643e56fe' for key 'files.file_path_hash'")
+INFO 2025-09-22 00:25:48,618 utils Scan completed: 2 scanned, 0 added, 0 updated, 0 duplicates
+INFO 2025-09-22 00:25:48,619 utils Marked 0 files as duplicates
+INFO 2025-09-22 00:25:48,619 scanner Periodic scan tick finished.
+INFO 2025-09-22 00:26:45,335 apps Database ready at startup; starting initial and periodic scans.
+INFO 2025-09-22 00:26:45,388 apps Starting scan function: initial_scan
+INFO 2025-09-22 00:26:45,388 apps Initial scan thread started.
+INFO 2025-09-22 00:26:45,388 apps Starting scan function: periodic_scan
+INFO 2025-09-22 00:26:45,388 apps Periodic scan thread started.
+INFO 2025-09-22 00:26:45,389 scanner Starting initial file scan (with WebP thumbnails)...
+INFO 2025-09-22 00:26:45,390 scanner Starting periodic scan loop (interval=21600 sec) with WebP thumbnails...
+INFO 2025-09-22 00:26:45,390 scanner Periodic scan tick.
+INFO 2025-09-22 00:26:45,404 autoreload Watching for file changes with StatReloader

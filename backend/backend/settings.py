@@ -188,3 +188,8 @@ LOGGING = {
         },
     },
 }
+# WebP サムネイル保存先（例：<プロジェクト>/media/webp）
+WEBP_DIR = os.path.join(MEDIA_ROOT, 'webp')
+
+# サムネイルの既定拡張子（将来切替用）
+THUMBNAIL_EXT = 'webp'
