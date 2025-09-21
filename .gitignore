@@ -1,0 +1,33 @@
+# Byte-code files
+*.pyc
+__pycache__/
+
+# Virtual environment
+venv/
+env/
+.venv/
+.git/
+
+# Database files
+*.sqlite3
+
+# Media and static files (if served locally for development)
+media/
+static/
+
+# Environment-specific configuration (e.g., sensitive settings)
+.env
+local_settings.py
+
+# Editor and IDE specific files
+.vscode/
+.idea/
+*.swp
+*~
+
+# Test coverage files
+.coverage
+.coverage.*
+
+# Django specific
+migrations/00*.py # Ignore initial migration files if you're using a specific migration workflow

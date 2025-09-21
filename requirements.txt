@@ -1,0 +1,15 @@
+Django==5.0.1
+djangorestframework==3.14.0
+django-cors-headers==4.3.1
+mysqlclient==2.2.1
+daphne==4.0.0
+channels==4.0.0
+Pillow==10.2.0
+ffmpeg-python==0.2.0
+celery==5.3.4
+redis==5.0.1
+python-dotenv==1.0.0
+watchdog==3.0.0
+django-cleanup==8.0.0
+imageio==2.33.1
+imageio-ffmpeg==0.4.9

@@ -1,0 +1,3 @@
+"""
+Backend Django project package.
+"""
