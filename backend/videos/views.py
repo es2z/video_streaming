@@ -1,3 +1,4 @@
+# backend/videos/views.py
 """
 Views for video streaming application.
 """
@@ -65,6 +66,7 @@ class FileViewSet(viewsets.ModelViewSet):
         if search:
             queryset = queryset.filter(
                 Q(file_name__icontains=search) |
+                Q(file_path__icontains=search) |
                 Q(tags__tag_name__icontains=search)
             ).distinct()
         
@@ -74,7 +76,7 @@ class FileViewSet(viewsets.ModelViewSet):
         
         return queryset
     
-    @action(detail=False, methods=['get'])
+    @action(detail=False, methods=['get'], url_path='all')
     def all_files(self, request):
         """削除されていないすべてのファイル"""
         queryset = self.get_queryset().filter(delete_flag=False)
@@ -85,7 +87,7 @@ class FileViewSet(viewsets.ModelViewSet):
         serializer = FileListSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
     
-    @action(detail=False, methods=['get'])
+    @action(detail=False, methods=['get'], url_path='no-folder')
     def no_folder_files(self, request):
         """フォルダに属さないファイル"""
         queryset = self.get_queryset().filter(folders__isnull=True, delete_flag=False)
@@ -96,9 +98,9 @@ class FileViewSet(viewsets.ModelViewSet):
         serializer = FileListSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
     
-    @action(detail=False, methods=['get'])
+    @action(detail=False, methods=['get'], url_path='deleted')
     def deleted_files(self, request):
-        """削除フラグが付いたファイル"""
+        """削除フラグの付いたファイル"""
         queryset = self.get_queryset().filter(delete_flag=True)
         page = self.paginate_queryset(queryset)
         if page is not None:
@@ -107,7 +109,7 @@ class FileViewSet(viewsets.ModelViewSet):
         serializer = FileListSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
     
-    @action(detail=False, methods=['get'])
+    @action(detail=False, methods=['get'], url_path='duplicates')
     def duplicate_files(self, request):
         """重複フラグが付いたファイル"""
         queryset = self.get_queryset().filter(duplicate_flag=True)
@@ -117,137 +119,6 @@ class FileViewSet(viewsets.ModelViewSet):
             return self.get_paginated_response(serializer.data)
         serializer = FileListSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
-    
-    @action(detail=True, methods=['post'])
-    def mark_deleted(self, request, pk=None):
-        """削除フラグを設定"""
-        file = self.get_object()
-        file.mark_as_deleted()
-        serializer = FileDetailSerializer(file, context={'request': request})
-        return Response(serializer.data)
-    
-    @action(detail=True, methods=['post'])
-    def restore(self, request, pk=None):
-        """削除フラグを解除"""
-        file = self.get_object()
-        file.restore()
-        serializer = FileDetailSerializer(file, context={'request': request})
-        return Response(serializer.data)
-    
-    @action(detail=True, methods=['post'])
-    def add_to_folder(self, request, pk=None):
-        """フォルダに追加"""
-        file = self.get_object()
-        folder_id = request.data.get('folder_id')
-        
-        if not folder_id:
-            return Response({'error': 'folder_id is required'}, status=status.HTTP_400_BAD_REQUEST)
-        
-        try:
-            folder = Folder.objects.get(id=folder_id)
-            file.add_to_folder(folder)
-            serializer = FileDetailSerializer(file, context={'request': request})
-            return Response(serializer.data)
-        except Folder.DoesNotExist:
-            return Response({'error': 'Folder not found'}, status=status.HTTP_404_NOT_FOUND)
-    
-    @action(detail=True, methods=['post'])
-    def remove_from_folder(self, request, pk=None):
-        """フォルダから削除"""
-        file = self.get_object()
-        folder_id = request.data.get('folder_id')
-        
-        if not folder_id:
-            return Response({'error': 'folder_id is required'}, status=status.HTTP_400_BAD_REQUEST)
-        
-        try:
-            folder = Folder.objects.get(id=folder_id)
-            file.remove_from_folder(folder)
-            serializer = FileDetailSerializer(file, context={'request': request})
-            return Response(serializer.data)
-        except Folder.DoesNotExist:
-            return Response({'error': 'Folder not found'}, status=status.HTTP_404_NOT_FOUND)
-    
-    @action(detail=True, methods=['post'])
-    def add_tags(self, request, pk=None):
-        """タグを追加"""
-        file = self.get_object()
-        tag_names = request.data.get('tag_names', [])
-        
-        for tag_name in tag_names:
-            file.add_tag(tag_name)
-        
-        serializer = FileDetailSerializer(file, context={'request': request})
-        return Response(serializer.data)
-    
-    @action(detail=True, methods=['post'])
-    def remove_tags(self, request, pk=None):
-        """タグを削除"""
-        file = self.get_object()
-        tag_names = request.data.get('tag_names', [])
-        
-        for tag_name in tag_names:
-            file.remove_tag(tag_name)
-        
-        serializer = FileDetailSerializer(file, context={'request': request})
-        return Response(serializer.data)
-    
-    @action(detail=False, methods=['post'])
-    def bulk_action(self, request):
-        """一括操作"""
-        serializer = FileBulkActionSerializer(data=request.data)
-        
-        if not serializer.is_valid():
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
-        data = serializer.validated_data
-        file_ids = data['file_ids']
-        action = data['action']
-        
-        files = File.objects.filter(id__in=file_ids)
-        
-        if action == 'delete':
-            files.update(delete_flag=True, updated_at=timezone.now())
-        elif action == 'restore':
-            files.update(delete_flag=False, updated_at=timezone.now())
-        elif action == 'add_to_folder':
-            folder_id = data.get('folder_id')
-            if folder_id:
-                try:
-                    folder = Folder.objects.get(id=folder_id)
-                    for file in files:
-                        file.add_to_folder(folder)
-                except Folder.DoesNotExist:
-                    return Response({'error': 'Folder not found'}, status=status.HTTP_404_NOT_FOUND)
-        elif action == 'remove_from_folder':
-            folder_id = data.get('folder_id')
-            if folder_id:
-                try:
-                    folder = Folder.objects.get(id=folder_id)
-                    for file in files:
-                        file.remove_from_folder(folder)
-                except Folder.DoesNotExist:
-                    return Response({'error': 'Folder not found'}, status=status.HTTP_404_NOT_FOUND)
-        elif action == 'add_tags':
-            tag_names = data.get('tag_names', [])
-            for file in files:
-                for tag_name in tag_names:
-                    file.add_tag(tag_name)
-        elif action == 'remove_tags':
-            tag_names = data.get('tag_names', [])
-            for file in files:
-                for tag_name in tag_names:
-                    file.remove_tag(tag_name)
-        
-        return Response({'success': True, 'files_affected': files.count()})
-    
-    def retrieve(self, request, *args, **kwargs):
-        """ファイル詳細取得時に最終アクセス時刻を更新"""
-        instance = self.get_object()
-        instance.last_accessed = timezone.now()
-        instance.save(update_fields=['last_accessed'])
-        serializer = self.get_serializer(instance)
-        return Response(serializer.data)
 
 
 class FolderViewSet(viewsets.ModelViewSet):
@@ -255,27 +126,21 @@ class FolderViewSet(viewsets.ModelViewSet):
     queryset = Folder.objects.all()
     serializer_class = FolderSerializer
     
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        
-        # 親フォルダでフィルタ
-        parent_id = self.request.query_params.get('parent_id')
-        if parent_id == 'null':
-            queryset = queryset.filter(parent__isnull=True)
-        elif parent_id:
-            queryset = queryset.filter(parent_id=parent_id)
-        
-        return queryset
-    
-    @action(detail=False, methods=['get'])
+    @action(detail=False, methods=['get'], url_path='tree')
     def tree(self, request):
-        """フォルダツリー構造を取得"""
+        """フォルダツリーを取得"""
         def build_tree(parent=None):
+            nodes = Folder.objects.filter(parent=parent).annotate(
+                file_count=Count('files')
+            )
             folders = []
-            for folder in Folder.objects.filter(parent=parent):
-                folder_data = FolderSerializer(folder).data
-                folder_data['children'] = build_tree(folder)
-                folders.append(folder_data)
+            for node in nodes:
+                folders.append({
+                    'id': node.id,
+                    'name': node.name,
+                    'children': build_tree(node),
+                    'file_count': node.file_count
+                })
             return folders
         
         tree = build_tree()
@@ -287,29 +152,25 @@ class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     
-    @action(detail=False, methods=['get'])
+    @action(detail=False, methods=['get'], url_path='popular')
     def popular(self, request):
         """人気のタグを取得"""
         limit = int(request.query_params.get('limit', 20))
-        tags = self.queryset.order_by('-usage_count')[:limit]
-        serializer = self.get_serializer(tags, many=True)
+        tags = Tag.objects.annotate(num_files=Count('files')).order_by('-num_files')[:limit]
+        serializer = TagSerializer(tags, many=True)
         return Response(serializer.data)
     
-    @action(detail=False, methods=['get'])
+    @action(detail=False, methods=['get'], url_path='search')
     def search(self, request):
-        """タグを検索"""
-        query = request.query_params.get('q', '')
-        if query:
-            tags = self.queryset.filter(tag_name__icontains=query)
-        else:
-            tags = self.queryset.all()
-        
-        serializer = self.get_serializer(tags, many=True)
+        """タグ検索"""
+        q = request.query_params.get('q', '')
+        tags = Tag.objects.filter(tag_name__icontains=q)[:50]
+        serializer = TagSerializer(tags, many=True)
         return Response(serializer.data)
 
 
 class GroupViewSet(viewsets.ModelViewSet):
-    """タググループビューセット"""
+    """グループビューセット"""
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
 
@@ -334,7 +195,7 @@ class ScanHistoryViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = ScanHistory.objects.all()
     serializer_class = ScanHistorySerializer
     
-    @action(detail=False, methods=['get'])
+    @action(detail=False, methods=['get'], url_path='latest')
     def latest(self, request):
         """最新のスキャン履歴を取得"""
         latest = self.queryset.first()

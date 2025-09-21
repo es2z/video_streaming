@@ -152,7 +152,7 @@ function SettingsDialog({ open, onClose }) {
                                 <Switch
                                     checked={displaySettings.animatedThumbnails}
                                     onChange={(e) =>
-                                        handleDisplaySettingChange(
+                                        haneDisplaySettingChange(
                                             "animatedThumbnails",
                                             e.target.checked
                                         )
