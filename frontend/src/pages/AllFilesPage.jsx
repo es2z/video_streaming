@@ -146,8 +146,8 @@ function AllFilesPage() {
                 switch (action) {
                     case "delete":
                         await fileAPI.bulkAction({
-                            file_ids: targetIds,
-                            action: "delete",
+                            ids: targetIds,
+                            action: "mark_deleted",
                         });
                         setFiles((prev) =>
                             prev.filter((f) => !targetIds.includes(f.id))

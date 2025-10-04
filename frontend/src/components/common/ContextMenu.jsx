@@ -28,6 +28,8 @@ import {
     Folder as FolderIcon,
     Edit as EditIcon,
     Info as InfoIcon,
+    PictureInPictureAlt as PipIcon,
+    PlayArrow as PlayIcon,
 } from "@mui/icons-material";
 
 import {
@@ -35,7 +37,9 @@ import {
     notificationAtom,
     folderActionModeAtom,
     selectedFilesAtom,
+    openPlayersAtom,
 } from "@store/atoms";
+import { playerModeAtom } from "@components/common/PlayerModeToggle";
 import { fileAPI, folderAPI } from "@services/api";
 import TagEditDialog from "@components/dialogs/TagEditDialog";
 
@@ -45,6 +49,8 @@ function ContextMenu() {
     const [, setNotification] = useAtom(notificationAtom);
     const [, setFolderActionMode] = useAtom(folderActionModeAtom);
     const [selectedFiles] = useAtom(selectedFilesAtom);
+    const [, setOpenPlayers] = useAtom(openPlayersAtom);
+    const [, setPlayerMode] = useAtom(playerModeAtom);
 
     const [folderSelectDialog, setFolderSelectDialog] = useState(false);
     const [tagDialog, setTagDialog] = useState(false);
@@ -133,8 +139,8 @@ function ContextMenu() {
 
         try {
             await fileAPI.bulkAction({
-                file_ids: targetFiles.map((f) => f.id),
-                action: "delete",
+                ids: targetFiles.map((f) => f.id),
+                action: "mark_deleted",
             });
 
             setNotification({
@@ -162,7 +168,7 @@ function ContextMenu() {
 
         try {
             await fileAPI.bulkAction({
-                file_ids: targetFiles.map((f) => f.id),
+                ids: targetFiles.map((f) => f.id),
                 action: "restore",
             });
 
@@ -190,11 +196,49 @@ function ContextMenu() {
         setTagDialog(true);
     };
 
+    // PIPで開く
+    const handleOpenInPIP = () => {
+        const targetFiles = selectedFiles.length > 0 ? selectedFiles : [contextMenu.file];
+
+        // PIPモードに切り替え
+        setPlayerMode('multi');
+
+        // openPlayersAtomに追加
+        setOpenPlayers((prev) => {
+            const newPlayers = [...prev];
+            for (const file of targetFiles) {
+                // 既に開いているか確認
+                const alreadyOpen = prev.some((p) => p.id === file.id);
+                if (!alreadyOpen) {
+                    newPlayers.push(file);
+                }
+            }
+            return newPlayers;
+        });
+
+        setNotification({
+            open: true,
+            message: `${targetFiles.length}個のファイルをPIPで開きました`,
+            severity: "success",
+        });
+
+        handleClose();
+    };
+
     // メニュー項目の判定
     const getMenuItems = () => {
         const items = [];
         const isDeletedPage = location.pathname === "/deleted";
         const isFolderPage = location.pathname.startsWith("/folders");
+
+        // PIPで開く（削除ページ以外）
+        if (!isDeletedPage) {
+            items.push({
+                icon: <PipIcon />,
+                text: "PIPで開く",
+                onClick: handleOpenInPIP,
+            });
+        }
 
         if (isFolderPage && location.pathname !== "/folders") {
             items.push({

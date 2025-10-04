@@ -1280,3 +1280,26 @@ INFO 2025-10-05 00:44:30,675 views Starting forced file scan...
 INFO 2025-10-05 00:44:32,033 utils Added file: 2024-01-02 12-23-11.mkv
 INFO 2025-10-05 00:44:32,049 utils Scan completed: 4 scanned, 1 added, 3 updated, 0 duplicates
 INFO 2025-10-05 00:44:32,050 utils Marked 0 files as duplicates
+WARNING 2025-10-05 00:53:49,078 log Not Found: /media/gifs/p.gif
+WARNING 2025-10-05 00:55:05,277 log Bad Request: /api/folders/
+WARNING 2025-10-05 00:55:29,828 log Not Found: /media/gifs/p.gif
+WARNING 2025-10-05 00:55:39,485 log Not Found: /media/gifs/p.gif
+WARNING 2025-10-05 00:56:42,592 log Bad Request: /api/folders/
+WARNING 2025-10-05 00:56:47,100 log Bad Request: /api/folders/
+WARNING 2025-10-05 00:57:50,182 log Not Found: /media/gifs/p.gif
+WARNING 2025-10-05 00:57:55,428 log Not Found: /media/gifs/p.gif
+WARNING 2025-10-05 00:57:57,335 log Method Not Allowed: /api/files/bulk_action/
+WARNING 2025-10-05 00:57:58,862 log Not Found: /media/gifs/p.gif
+WARNING 2025-10-05 00:58:03,348 log Method Not Allowed: /api/files/bulk_action/
+WARNING 2025-10-05 01:00:45,431 log Bad Request: /api/folders/
+WARNING 2025-10-05 01:03:40,933 log Not Found: /media/gifs/p.gif
+WARNING 2025-10-05 01:18:53,205 log Method Not Allowed: /api/files/bulk_action/
+WARNING 2025-10-05 01:18:59,229 log Bad Request: /api/folders/
+WARNING 2025-10-05 01:19:09,289 log Not Found: /media/gifs/p.gif
+WARNING 2025-10-05 01:19:15,199 log Bad Request: /api/folders/
+WARNING 2025-10-05 01:21:28,242 log Not Found: /media/gifs/p.gif
+WARNING 2025-10-05 01:22:31,019 log Not Found: /media/gifs/p.gif
+WARNING 2025-10-05 01:22:51,901 log Bad Request: /api/folders/
+WARNING 2025-10-05 01:23:06,544 log Not Found: /media/gifs/p.gif
+WARNING 2025-10-05 01:23:31,602 log Method Not Allowed: /api/files/bulk_action/
+WARNING 2025-10-05 01:23:40,818 log Method Not Allowed: /api/files/bulk_action/

@@ -33,18 +33,56 @@ function PlayerWrapper({
     onDrag,
     gridPosition,
 }) {
-    // 初期サイズを画面サイズの30%に設定（初期指示の仕様通り）
-    const initialWidth = Math.min(window.innerWidth * 0.3, 480);
-    const initialHeight = Math.min(window.innerHeight * 0.3, 270);
+    const nodeRef = useRef(null);
+    const [isFullscreen, setIsFullscreen] = useState(false);
+    const [aspectRatioFit, setAspectRatioFit] = useState(player.aspectRatioFit || "contain");
 
-    const [size, setSize] = useState(
-        player.size || { width: initialWidth, height: initialHeight }
-    );
+    // 動画のアスペクト比に基づいた初期サイズを計算
+    const calculateInitialSize = useCallback(() => {
+        const videoWidth = player.width || 16;
+        const videoHeight = player.height || 9;
+        const aspectRatio = videoWidth / videoHeight;
+
+        const screenWidth = window.innerWidth;
+        const screenHeight = window.innerHeight;
+        const maxArea = screenWidth * screenHeight * 0.15; // 画面の15%以内
+
+        // アスペクト比を維持しながら、面積が15%以内になるようにサイズを計算
+        let width = Math.sqrt(maxArea * aspectRatio);
+        let height = width / aspectRatio;
+
+        // 画面サイズを超えないように調整
+        if (width > screenWidth * 0.5) {
+            width = screenWidth * 0.5;
+            height = width / aspectRatio;
+        }
+        if (height > screenHeight * 0.5) {
+            height = screenHeight * 0.5;
+            width = height * aspectRatio;
+        }
+
+        // 最小サイズを確保
+        const minWidth = 200;
+        const minHeight = 150;
+        if (width < minWidth) {
+            width = minWidth;
+            height = width / aspectRatio;
+        }
+        if (height < minHeight) {
+            height = minHeight;
+            width = height * aspectRatio;
+        }
+
+        return { width: Math.round(width), height: Math.round(height) };
+    }, [player.width, player.height]);
+
+    const [size, setSize] = useState(() => {
+        return player.size || calculateInitialSize();
+    });
+
     const [position, setPosition] = useState(
         player.position || { x: 50 + index * 30, y: 50 + index * 30 }
     );
-    const [isFullscreen, setIsFullscreen] = useState(false);
-    const nodeRef = useRef(null);
 
     const handleResize = (event, { size: newSize }) => {
         setSize(newSize);
@@ -53,7 +91,8 @@ function PlayerWrapper({
         }
     };
 
-    const handleDrag = (e, data) => {
+    const handleDragStop = (e, data) => {
+        // ドロップした場所に移動
         setPosition({ x: data.x, y: data.y });
         if (onDrag) {
             onDrag(index, { x: data.x, y: data.y });
@@ -141,10 +180,10 @@ function PlayerWrapper({
         <Draggable
             nodeRef={nodeRef}
             handle=".drag-handle"
-            position={position}
-            onDrag={handleDrag}
+            onStop={handleDragStop}
             bounds="parent"
             disabled={isFullscreen}
+            defaultPosition={position}
         >
             <div
                 ref={nodeRef}
@@ -221,6 +260,8 @@ function PlayerWrapper({
                                 file={player}
                                 onClose={handleClose}
                                 isMultiPlayer={true}
+                                aspectRatioFit={aspectRatioFit}
+                                onAspectRatioFitChange={setAspectRatioFit}
                             />
                         </Box>
                     </Paper>

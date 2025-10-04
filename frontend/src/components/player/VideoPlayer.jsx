@@ -45,12 +45,26 @@ import {
 import { fileAPI, getVideoUrl } from "@services/api";
 import { formatTime } from "@utils/format";
 
-function VideoPlayer({ file, onClose, onNext, onPrev, isMultiPlayer = false }) {
+function VideoPlayer({
+    file,
+    onClose,
+    onNext,
+    onPrev,
+    isMultiPlayer = false,
+    aspectRatioFit: propsAspectRatioFit,
+    onAspectRatioFitChange
+}) {
     const videoRef = useRef(null);
     const containerRef = useRef(null);
     const [playerSettings, setPlayerSettings] = useAtom(playerSettingsAtom);
     const [, setOpenPlayers] = useAtom(openPlayersAtom);
     const [, setNotification] = useAtom(notificationAtom);
+
+    // aspectRatioFitはpropsから渡された場合はそれを使用、そうでない場合はglobal設定を使用
+    const [localAspectRatioFit, setLocalAspectRatioFit] = useState(
+        propsAspectRatioFit || playerSettings.aspectRatioFit
+    );
+    const aspectRatioFit = propsAspectRatioFit !== undefined ? propsAspectRatioFit : localAspectRatioFit;
 
     // プレイヤー状態
     const [playing, setPlaying] = useState(false);
@@ -462,7 +476,7 @@ function VideoPlayer({ file, onClose, onNext, onPrev, isMultiPlayer = false }) {
                 style={{
                     width: "100%",
                     height: "100%",
-                    objectFit: playerSettings.aspectRatioFit,
+                    objectFit: aspectRatioFit,
                     transform: `scale(${scale})`,
                     transformOrigin: `${zoomOrigin.x}% ${zoomOrigin.y}%`,
                 }}
@@ -596,14 +610,18 @@ function VideoPlayer({ file, onClose, onNext, onPrev, isMultiPlayer = false }) {
                         {/* アスペクト比 */}
                         <IconButton
                             onClick={() => {
-                                const newFit =
-                                    playerSettings.aspectRatioFit === "contain"
-                                        ? "cover"
-                                        : "contain";
-                                setPlayerSettings((prev) => ({
-                                    ...prev,
-                                    aspectRatioFit: newFit,
-                                }));
+                                const newFit = aspectRatioFit === "contain" ? "cover" : "contain";
+                                if (propsAspectRatioFit !== undefined && onAspectRatioFitChange) {
+                                    // マルチプレイヤーモード: 各プレイヤーごとに状態を管理
+                                    onAspectRatioFitChange(newFit);
+                                } else {
+                                    // シングルプレイヤーモード: グローバル設定を更新
+                                    setLocalAspectRatioFit(newFit);
+                                    setPlayerSettings((prev) => ({
+                                        ...prev,
+                                        aspectRatioFit: newFit,
+                                    }));
+                                }
                             }}
                             color="inherit"
                         >

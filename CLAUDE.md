@@ -161,12 +161,14 @@ All endpoints are prefixed with `/api/`:
 - `POST /files/{id}/mark_deleted/` - Soft delete
 - `POST /files/{id}/restore/` - Restore deleted file
 - `POST /files/{id}/add_to_folder/` - Add to folder (body: `{folder_id}`)
+- `POST /files/{id}/remove_from_folder/` - Remove from folder (body: `{folder_id}`)
 - `POST /files/{id}/add_tags/` - Add tags (body: `{tag_names: []}`)
-- `POST /files/bulk_action/` - Bulk operations
+- `POST /files/{id}/remove_tags/` - Remove tags (body: `{tag_names: []}`)
+- `POST /files/bulk_action/` - Bulk operations (body: `{ids: [], action: "mark_deleted"|"restore"|"add_tags"|"remove_tags"|"add_to_folder"|"remove_from_folder", tag_ids?: [], folder_id?: number}`)
 
 **Folders:**
 - `GET /folders/tree/` - Hierarchical folder tree
-- `POST /folders/` - Create folder (body: `{folder_name, parent}`)
+- `POST /folders/` - Create folder (body: `{folder_name, parent?: number}`) - parent is optional for root folders
 
 **System:**
 - `GET /force_refresh/` - Trigger manual file scan
@@ -174,20 +176,35 @@ All endpoints are prefixed with `/api/`:
 
 ### Video Player Features
 
+**Player Modes:**
+- **Single Mode**: Full-screen modal player (default)
+- **Multi/PIP Mode**: Multiple floating players with drag-and-drop
+- Toggle between modes using `PlayerModeToggle` in the header
+- Right-click menu: "PIPで開く" automatically switches to PIP mode
+
 The custom player (`VideoPlayer.jsx`) implements:
 
 - **A-B Loop**: Smooth looping between two timestamps
 - **Variable Speed**: 0.1x to 5x with fine control
 - **Long Press**: Hold for 2x speed playback
-- **Double Tap**: Left/right for -5s/+5s seeking
-- **Flick Gestures**: Swipe for larger seeks
+- **Double Tap/Click**:
+  - Left 35% - Rewind 5 seconds
+  - Right 35% - Skip forward 5 seconds
+  - Center 35-65% - Play/Pause toggle
+- **Mouse Wheel Zoom**:
+  - Single player mode: Zooms video (1x-3x scale)
+  - PIP mode: Resizes player window
+- **Pinch Zoom**: Touch gesture support for zoom
 - **Keyboard Shortcuts**: Space (play/pause), F (fullscreen), L (loop), M (mute), arrows (seek/volume)
 
 The `MultiPlayerContainer.jsx` enables:
 - Multiple simultaneous video playback
-- Free drag-and-drop positioning
+- **Aspect Ratio Aware Sizing**: Initial size calculated to maintain video aspect ratio (max 15% of screen area)
+- **Independent Player State**: Each PIP player has its own aspectRatioFit setting (contain/cover)
+- Free drag-and-drop positioning (optimized for smooth movement)
 - Grid layout mode
-- Pinch-to-resize support
+- Mouse wheel resize in free mode
+- Per-player fullscreen toggle
 
 ## Configuration
 
@@ -216,6 +233,29 @@ Supported formats: mp4, avi, mkv, mov, wmv, flv, webm, m4v, mpg, mpeg
 Generated thumbnails stored in: `media/gifs/` (or `media/webp/` for WebP format)
 
 ## Important Implementation Details
+
+### Bulk Action API
+When using the bulk action API, the request body must use `ids` (not `file_ids`) and valid action names:
+
+**Frontend:**
+```javascript
+fileAPI.bulkAction({
+    ids: [1, 2, 3],  // NOT file_ids
+    action: "mark_deleted",  // NOT "delete"
+    // Optional based on action:
+    tag_ids: [1, 2],
+    folder_id: 5
+})
+```
+
+**Valid Actions:**
+- `mark_deleted` - Set delete flag
+- `restore` - Remove delete flag
+- `mark_duplicate` - Set duplicate flag
+- `add_tags` - Add tags (requires `tag_ids`)
+- `remove_tags` - Remove tags (requires `tag_ids`)
+- `add_to_folder` - Add to folder (requires `folder_id`)
+- `remove_from_folder` - Remove from folder (requires `folder_id`)
 
 ### File Path Hashing
 The `File` model uses `file_path_hash` (SHA-256) as the unique key because MySQL has varchar index length limits. When querying by path, hash the path first:

@@ -106,7 +106,13 @@ export const fileAPI = {
 
     // 一括操作
     bulkAction: (data) => {
-        return api.post("/files/bulk_action/", data);
+        // file_ids を ids に変換
+        const payload = {
+            ...data,
+            ids: data.file_ids || data.ids,
+        };
+        delete payload.file_ids;
+        return api.post("/files/bulk_action/", payload);
     },
 };
 
