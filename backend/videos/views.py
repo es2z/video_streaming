@@ -206,7 +206,21 @@ class FolderViewSet(viewsets.ModelViewSet):
     """フォルダビューセット"""
     queryset = Folder.objects.all()
     serializer_class = FolderSerializer
-    
+
+    def create(self, request, *args, **kwargs):
+        """フォルダを作成（parentがない場合はNullに設定）"""
+        data = request.data.copy()
+
+        # parentフィールドが存在しない場合はNoneを設定
+        if 'parent' not in data:
+            data['parent'] = None
+
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
     @action(detail=False, methods=['get'], url_path='tree')
     def tree(self, request):
         """フォルダツリーを取得"""

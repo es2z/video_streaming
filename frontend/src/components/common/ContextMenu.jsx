@@ -231,12 +231,19 @@ function ContextMenu() {
         const isDeletedPage = location.pathname === "/deleted";
         const isFolderPage = location.pathname.startsWith("/folders");
 
-        // PIPで開く（削除ページ以外）
-        if (!isDeletedPage) {
+        // PIPで開く
+        items.push({
+            icon: <PipIcon />,
+            text: "PIPで開く",
+            onClick: handleOpenInPIP,
+        });
+
+        // 削除済みページの場合は復元オプションを最初に表示
+        if (isDeletedPage) {
             items.push({
-                icon: <PipIcon />,
-                text: "PIPで開く",
-                onClick: handleOpenInPIP,
+                icon: <RestoreIcon />,
+                text: "削除を解除",
+                onClick: handleRestore,
             });
         }
 
@@ -275,21 +282,13 @@ function ContextMenu() {
             );
         }
 
-        items.push({
-            icon: <TagIcon />,
-            text: "タグを追加",
-            onClick: handleAddTags,
-        });
-
-        if (isDeletedPage) {
-            items.push(
-                { divider: true },
-                {
-                    icon: <RestoreIcon />,
-                    text: "ファイルを復元",
-                    onClick: handleRestore,
-                }
-            );
+        // タグ追加は常に表示
+        if (!isDeletedPage) {
+            items.push({
+                icon: <TagIcon />,
+                text: "タグを追加",
+                onClick: handleAddTags,
+            });
         }
 
         return items;

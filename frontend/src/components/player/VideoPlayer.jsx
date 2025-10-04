@@ -722,18 +722,102 @@ function VideoPlayer({
             <Dialog
                 open={abLoopDialogOpen}
                 onClose={() => setAbLoopDialogOpen(false)}
+                maxWidth="sm"
+                fullWidth
             >
                 <DialogTitle>A-Bループ設定</DialogTitle>
                 <DialogContent>
-                    <Stack spacing={2}>
-                        <Button onClick={() => setABLoopPoint("start")}>
-                            開始地点を設定 ({formatTime(abLoop.start || 0)})
-                        </Button>
-                        <Button onClick={() => setABLoopPoint("end")}>
-                            終了地点を設定 ({formatTime(abLoop.end || duration)}
-                            )
-                        </Button>
+                    <Stack spacing={3} sx={{ mt: 1 }}>
+                        {/* 開始地点 */}
+                        <Box>
+                            <Typography variant="subtitle2" gutterBottom>
+                                開始地点 (A)
+                            </Typography>
+                            <Stack direction="row" spacing={1} alignItems="center">
+                                <Button
+                                    variant="outlined"
+                                    size="small"
+                                    onClick={() => setABLoopPoint("start")}
+                                >
+                                    現在位置を設定
+                                </Button>
+                                <TextField
+                                    type="number"
+                                    size="small"
+                                    value={abLoop.start !== null ? abLoop.start.toFixed(1) : "0.0"}
+                                    onChange={(e) => {
+                                        const value = parseFloat(e.target.value);
+                                        if (!isNaN(value) && value >= 0 && value <= duration) {
+                                            setAbLoop((prev) => ({
+                                                ...prev,
+                                                start: value,
+                                                enabled: prev.end !== null && value < prev.end,
+                                            }));
+                                        }
+                                    }}
+                                    inputProps={{
+                                        step: 0.1,
+                                        min: 0,
+                                        max: duration,
+                                    }}
+                                    sx={{ width: 120 }}
+                                />
+                                <Typography variant="body2">秒</Typography>
+                            </Stack>
+                        </Box>
+
+                        {/* 終了地点 */}
+                        <Box>
+                            <Typography variant="subtitle2" gutterBottom>
+                                終了地点 (B)
+                            </Typography>
+                            <Stack direction="row" spacing={1} alignItems="center">
+                                <Button
+                                    variant="outlined"
+                                    size="small"
+                                    onClick={() => setABLoopPoint("end")}
+                                >
+                                    現在位置を設定
+                                </Button>
+                                <TextField
+                                    type="number"
+                                    size="small"
+                                    value={abLoop.end !== null ? abLoop.end.toFixed(1) : duration.toFixed(1)}
+                                    onChange={(e) => {
+                                        const value = parseFloat(e.target.value);
+                                        if (!isNaN(value) && value >= 0 && value <= duration) {
+                                            setAbLoop((prev) => ({
+                                                ...prev,
+                                                end: value,
+                                                enabled: prev.start !== null && value > prev.start,
+                                            }));
+                                        }
+                                    }}
+                                    inputProps={{
+                                        step: 0.1,
+                                        min: 0,
+                                        max: duration,
+                                    }}
+                                    sx={{ width: 120 }}
+                                />
+                                <Typography variant="body2">秒</Typography>
+                            </Stack>
+                        </Box>
+
+                        {/* ループ範囲表示 */}
+                        {abLoop.enabled && (
+                            <Box sx={{ bgcolor: 'primary.light', p: 1, borderRadius: 1 }}>
+                                <Typography variant="body2">
+                                    ループ範囲: {abLoop.start.toFixed(1)}秒 ～ {abLoop.end.toFixed(1)}秒
+                                    （{(abLoop.end - abLoop.start).toFixed(1)}秒間）
+                                </Typography>
+                            </Box>
+                        )}
+
+                        {/* 解除ボタン */}
                         <Button
+                            variant="outlined"
+                            color="error"
                             onClick={() =>
                                 setAbLoop({
                                     enabled: false,

@@ -14,6 +14,7 @@ import {
     sortSettingsAtom,
     loadingAtom,
     notificationAtom,
+    contextMenuAtom,
 } from "@store/atoms";
 
 import { fileAPI } from "@services/api";
@@ -26,6 +27,7 @@ function DeletedFilesPage() {
     const [sortSettings] = useAtom(sortSettingsAtom);
     const [loading, setLoading] = useAtom(loadingAtom);
     const [, setNotification] = useAtom(notificationAtom);
+    const [, setContextMenu] = useAtom(contextMenuAtom);
 
     const [files, setFiles] = useState([]);
 
@@ -66,6 +68,20 @@ function DeletedFilesPage() {
             }
         },
         [multiSelectMode, setSelectedFiles]
+    );
+
+    const handleContextMenu = useCallback(
+        (e, file) => {
+            e.preventDefault();
+            setContextMenu({
+                open: true,
+                x: e.clientX,
+                y: e.clientY,
+                file,
+                type: 'deleted',
+            });
+        },
+        [setContextMenu]
     );
 
     const handleRestoreSelected = async () => {
@@ -139,7 +155,7 @@ function DeletedFilesPage() {
                         files={files}
                         selectedFiles={selectedFiles}
                         onFileSelect={handleFileSelect}
-                        onContextMenu={() => {}}
+                        onContextMenu={handleContextMenu}
                         onLoadMore={() => {}}
                         hasMore={false}
                         loading={loading}
@@ -149,7 +165,7 @@ function DeletedFilesPage() {
                         files={files}
                         selectedFiles={selectedFiles}
                         onFileSelect={handleFileSelect}
-                        onContextMenu={() => {}}
+                        onContextMenu={handleContextMenu}
                         onLoadMore={() => {}}
                         hasMore={false}
                         loading={loading}

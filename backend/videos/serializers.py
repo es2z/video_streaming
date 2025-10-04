@@ -63,6 +63,13 @@ class FolderSerializer(serializers.ModelSerializer):
     children_count = serializers.IntegerField(source="children.count", read_only=True)
     files_count = serializers.IntegerField(source="files.count", read_only=True)
 
+    # parentを明示的に定義してrequired=Falseを設定
+    parent = serializers.PrimaryKeyRelatedField(
+        queryset=Folder.objects.all(),
+        required=False,
+        allow_null=True
+    )
+
     class Meta:
         model = Folder
         fields = [
@@ -76,9 +83,6 @@ class FolderSerializer(serializers.ModelSerializer):
             "updated_at",
         ]
         read_only_fields = ["created_at", "updated_at"]
-        extra_kwargs = {
-            'parent': {'required': False, 'allow_null': True}
-        }
 
     def validate(self, data):
         """循環参照を防止"""

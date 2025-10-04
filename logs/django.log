@@ -1303,3 +1303,53 @@ WARNING 2025-10-05 01:22:51,901 log Bad Request: /api/folders/
 WARNING 2025-10-05 01:23:06,544 log Not Found: /media/gifs/p.gif
 WARNING 2025-10-05 01:23:31,602 log Method Not Allowed: /api/files/bulk_action/
 WARNING 2025-10-05 01:23:40,818 log Method Not Allowed: /api/files/bulk_action/
+INFO 2025-10-05 01:24:12,138 cli Starting server at tcp:port=8000:interface=0.0.0.0
+INFO 2025-10-05 01:24:12,139 server HTTP/2 support not enabled (install the http2 and tls Twisted extras)
+INFO 2025-10-05 01:24:12,139 server Configuring endpoint tcp:port=8000:interface=0.0.0.0
+INFO 2025-10-05 01:24:12,140 server Listening on TCP address 0.0.0.0:8000
+WARNING 2025-10-05 01:24:15,412 log Not Found: /media/gifs/p.gif
+WARNING 2025-10-05 01:24:20,356 log Bad Request: /api/folders/
+WARNING 2025-10-05 01:25:13,825 log Bad Request: /api/folders/
+WARNING 2025-10-05 01:25:26,519 log Not Found: /media/gifs/p.gif
+WARNING 2025-10-05 01:25:30,562 log Not Found: /media/gifs/p.gif
+WARNING 2025-10-05 01:25:40,534 log Not Found: /media/gifs/p.gif
+INFO 2025-10-05 01:31:26,631 views Starting forced file scan...
+INFO 2025-10-05 01:31:26,696 utils Scan completed: 4 scanned, 0 added, 3 updated, 0 duplicates
+INFO 2025-10-05 01:31:26,705 utils Marked 0 files as duplicates
+WARNING 2025-10-05 01:31:30,277 log Not Found: /media/gifs/p.gif
+WARNING 2025-10-05 01:36:32,255 log Not Found: /media/gifs/p.gif
+WARNING 2025-10-05 01:38:38,585 log Not Found: /media/gifs/p.gif
+INFO 2025-10-05 01:38:43,045 cli Starting server at tcp:port=8000:interface=0.0.0.0
+INFO 2025-10-05 01:38:43,045 server HTTP/2 support not enabled (install the http2 and tls Twisted extras)
+INFO 2025-10-05 01:38:43,045 server Configuring endpoint tcp:port=8000:interface=0.0.0.0
+INFO 2025-10-05 01:38:43,046 server Listening on TCP address 0.0.0.0:8000
+WARNING 2025-10-05 01:38:52,738 log Bad Request: /api/folders/
+WARNING 2025-10-05 01:38:58,216 log Bad Request: /api/folders/
+WARNING 2025-10-05 01:39:25,245 log Bad Request: /api/folders/
+WARNING 2025-10-05 01:39:52,987 log Not Found: /media/gifs/p.gif
+WARNING 2025-10-05 01:41:20,804 log Bad Request: /api/folders/
+INFO 2025-10-05 01:43:03,122 cli Starting server at tcp:port=8000:interface=0.0.0.0
+INFO 2025-10-05 01:43:03,122 server HTTP/2 support not enabled (install the http2 and tls Twisted extras)
+INFO 2025-10-05 01:43:03,122 server Configuring endpoint tcp:port=8000:interface=0.0.0.0
+INFO 2025-10-05 01:43:03,122 server Listening on TCP address 0.0.0.0:8000
+WARNING 2025-10-05 01:43:10,744 log Not Found: /media/gifs/p.gif
+WARNING 2025-10-05 01:43:19,203 log Bad Request: /api/folders/
+WARNING 2025-10-05 01:46:26,093 log Not Found: /media/gifs/p.gif
+WARNING 2025-10-05 01:48:27,724 log Not Found: /media/gifs/p.gif
+WARNING 2025-10-05 01:50:51,722 log Not Found: /media/gifs/p.gif
+WARNING 2025-10-05 01:51:26,320 log Not Found: /media/gifs/p.gif
+INFO 2025-10-05 01:52:02,412 cli Starting server at tcp:port=8000:interface=0.0.0.0
+INFO 2025-10-05 01:52:02,413 server HTTP/2 support not enabled (install the http2 and tls Twisted extras)
+INFO 2025-10-05 01:52:02,413 server Configuring endpoint tcp:port=8000:interface=0.0.0.0
+INFO 2025-10-05 01:52:02,414 server Listening on TCP address 0.0.0.0:8000
+WARNING 2025-10-05 01:52:18,521 log Not Found: /media/gifs/p.gif
+WARNING 2025-10-05 01:52:32,103 log Not Found: /media/gifs/p.gif
+WARNING 2025-10-05 01:52:38,909 log Bad Request: /api/folders/
+WARNING 2025-10-05 01:53:27,096 log Not Found: /media/gifs/p.gif
+WARNING 2025-10-05 01:58:18,173 log Not Found: /media/gifs/p.gif
+WARNING 2025-10-05 02:00:28,536 log Bad Request: /api/folders/
+WARNING 2025-10-05 02:00:35,108 log Bad Request: /api/folders/
+INFO 2025-10-05 02:01:03,899 cli Starting server at tcp:port=8000:interface=0.0.0.0
+INFO 2025-10-05 02:01:03,900 server HTTP/2 support not enabled (install the http2 and tls Twisted extras)
+INFO 2025-10-05 02:01:03,900 server Configuring endpoint tcp:port=8000:interface=0.0.0.0
+INFO 2025-10-05 02:01:03,900 server Listening on TCP address 0.0.0.0:8000

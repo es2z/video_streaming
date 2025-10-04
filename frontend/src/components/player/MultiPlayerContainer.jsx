@@ -103,13 +103,27 @@ function PlayerWrapper({
         onClose(index);
     };
 
+    // 元のサイズと位置を保存
+    const [savedState, setSavedState] = useState(null);
+
     const toggleFullscreen = () => {
         if (!isFullscreen) {
-            setSize({ width: window.innerWidth, height: window.innerHeight });
+            // 最大化：現在の状態を保存して、(0,0)に移動して全画面に
+            setSavedState({ size, position });
             setPosition({ x: 0, y: 0 });
+            setSize({ width: window.innerWidth, height: window.innerHeight });
         } else {
-            setSize({ width: 400, height: 300 });
-            setPosition({ x: index * 50, y: index * 50 });
+            // 元に戻す：保存した状態を復元（アスペクト比を維持）
+            if (savedState) {
+                setPosition(savedState.position);
+                // アスペクト比を維持したサイズを復元
+                setSize(savedState.size);
+            } else {
+                // フォールバック：アスペクト比を計算して復元
+                const calculatedSize = calculateInitialSize();
+                setSize(calculatedSize);
+                setPosition({ x: 50 + index * 30, y: 50 + index * 30 });
+            }
         }
         setIsFullscreen(!isFullscreen);
     };
@@ -180,10 +194,10 @@ function PlayerWrapper({
         <Draggable
             nodeRef={nodeRef}
             handle=".drag-handle"
+            position={position}
             onStop={handleDragStop}
             bounds="parent"
             disabled={isFullscreen}
-            defaultPosition={position}
         >
             <div
                 ref={nodeRef}
@@ -254,8 +268,8 @@ function PlayerWrapper({
                             </IconButton>
                         </Box>
 
-                        {/* プレイヤー本体 */}
-                        <Box sx={{ flexGrow: 1, mt: 4 }}>
+                        {/* プレイヤー本体 - タイトルバーの高さ（32px）を引く */}
+                        <Box sx={{ flexGrow: 1, height: 'calc(100% - 32px)', mt: '32px' }}>
                             <VideoPlayer
                                 file={player}
                                 onClose={handleClose}
