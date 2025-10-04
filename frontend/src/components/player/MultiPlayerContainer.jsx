@@ -33,8 +33,16 @@ function PlayerWrapper({
     onDrag,
     gridPosition,
 }) {
-    const [size, setSize] = useState({ width: 400, height: 300 });
-    const [position, setPosition] = useState({ x: index * 50, y: index * 50 });
+    // 初期サイズを画面サイズの30%に設定（初期指示の仕様通り）
+    const initialWidth = Math.min(window.innerWidth * 0.3, 480);
+    const initialHeight = Math.min(window.innerHeight * 0.3, 270);
+
+    const [size, setSize] = useState(
+        player.size || { width: initialWidth, height: initialHeight }
+    );
+    const [position, setPosition] = useState(
+        player.position || { x: 50 + index * 30, y: 50 + index * 30 }
+    );
     const [isFullscreen, setIsFullscreen] = useState(false);
     const nodeRef = useRef(null);
 
@@ -66,6 +74,29 @@ function PlayerWrapper({
         }
         setIsFullscreen(!isFullscreen);
     };
+
+    // マウスホイールでPIPプレイヤーのサイズを変更
+    const handleWheel = useCallback((e) => {
+        if (layoutMode !== 'free') return;
+
+        e.stopPropagation();
+        const delta = e.deltaY > 0 ? -20 : 20;
+
+        setSize(prevSize => {
+            const aspectRatio = prevSize.width / prevSize.height;
+            const newWidth = Math.max(200, Math.min(window.innerWidth, prevSize.width + delta));
+            const newHeight = newWidth / aspectRatio;
+
+            return {
+                width: newWidth,
+                height: newHeight
+            };
+        });
+
+        if (onResize) {
+            onResize(index, size);
+        }
+    }, [layoutMode, index, onResize, size]);
 
     // グリッドモードの場合
     if (layoutMode === "grid") {
@@ -120,7 +151,10 @@ function PlayerWrapper({
                 style={{
                     position: "absolute",
                     zIndex: isFullscreen ? 9999 : 1000 + index,
+                    // ポインターイベントを有効にしてクリック可能にする
+                    pointerEvents: "auto",
                 }}
+                onWheel={handleWheel}
             >
                 <Resizable
                     width={size.width}
@@ -256,7 +290,10 @@ function MultiPlayerContainer({ players: initialPlayers = [] }) {
                 left: 0,
                 right: 0,
                 bottom: 0,
-                bgcolor: "rgba(0, 0, 0, 0.8)",
+                // フリーモードの時は背景を透明にして下のコンテンツをクリック可能にする
+                bgcolor: layoutMode === "grid" ? "rgba(0, 0, 0, 0.8)" : "transparent",
+                // フリーモードの時はポインターイベントを通過させる
+                pointerEvents: layoutMode === "free" ? "none" : "auto",
                 zIndex: 1200,
                 ...(layoutMode === "grid" && {
                     display: "grid",
@@ -280,6 +317,8 @@ function MultiPlayerContainer({ players: initialPlayers = [] }) {
                     display: "flex",
                     alignItems: "center",
                     gap: 2,
+                    // コントロールバーは常にクリック可能
+                    pointerEvents: "auto",
                 }}
             >
                 <ToggleButtonGroup

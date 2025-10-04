@@ -15,7 +15,10 @@ import {
     sortSettingsAtom,
     loadingAtom,
     notificationAtom,
+    openPlayersAtom,
+    contextMenuAtom,
 } from "@store/atoms";
+import { playerModeAtom } from "@components/common/PlayerModeToggle";
 
 import { fileAPI } from "@services/api";
 
@@ -27,6 +30,8 @@ function AllFilesPage() {
     const [sortSettings] = useAtom(sortSettingsAtom);
     const [loading, setLoading] = useAtom(loadingAtom);
     const [, setNotification] = useAtom(notificationAtom);
+    const [openPlayers, setOpenPlayers] = useAtom(openPlayersAtom);
+    const [playerMode] = useAtom(playerModeAtom);
 
     const [files, setFiles] = useState([]);
     const [page, setPage] = useState(1);
@@ -100,12 +105,25 @@ function AllFilesPage() {
                     }
                 });
             } else {
-                // シングルクリックで再生
-                setPlayingFile(file);
-                setPlayerOpen(true);
+                // プレイヤーモードに応じて開き方を変更
+                if (playerMode === 'multi') {
+                    // PIPモード: openPlayersAtomに追加
+                    setOpenPlayers((prev) => {
+                        // 既に開いているか確認
+                        const alreadyOpen = prev.some((p) => p.id === file.id);
+                        if (alreadyOpen) {
+                            return prev;
+                        }
+                        return [...prev, file];
+                    });
+                } else {
+                    // シングルモード: モーダルで開く
+                    setPlayingFile(file);
+                    setPlayerOpen(true);
+                }
             }
         },
-        [multiSelectMode, setSelectedFiles]
+        [multiSelectMode, playerMode, setSelectedFiles, setOpenPlayers]
     );
 
     // 全選択/全解除
@@ -168,11 +186,22 @@ function AllFilesPage() {
         [selectedFiles, setSelectedFiles, setLoading, setNotification]
     );
 
+    const [contextMenu, setContextMenu] = useAtom(contextMenuAtom);
+
     // コンテキストメニュー処理
-    const handleContextMenu = useCallback((event, file) => {
-        event.preventDefault();
-        // コンテキストメニューを表示する処理
-    }, []);
+    const handleContextMenu = useCallback(
+        (event, file) => {
+            event.preventDefault();
+            setContextMenu({
+                open: true,
+                x: event.clientX,
+                y: event.clientY,
+                file: file,
+                type: "file",
+            });
+        },
+        [setContextMenu]
+    );
 
     // 無限スクロール
     const handleLoadMore = useCallback(() => {
@@ -196,6 +225,32 @@ function AllFilesPage() {
             setPlayingFile(files[currentIndex - 1]);
         }
     }, [files, playingFile]);
+
+    // すべてのファイルを開く
+    const handleOpenAll = useCallback(() => {
+        if (selectedFiles.length === 0) return;
+
+        // 選択されたファイルをPIPプレイヤーとして開く
+        const newPlayers = selectedFiles.map((file, index) => ({
+            id: `player-${file.id}-${Date.now()}`,
+            file,
+            position: {
+                x: 50 + index * 30,
+                y: 50 + index * 30,
+            },
+            size: {
+                width: Math.min(window.innerWidth * 0.3, 480),
+                height: Math.min(window.innerHeight * 0.3, 270),
+            },
+        }));
+
+        setOpenPlayers([...openPlayers, ...newPlayers]);
+        setNotification({
+            open: true,
+            message: `${selectedFiles.length}個の動画を開きました`,
+            severity: "success",
+        });
+    }, [selectedFiles, openPlayers, setOpenPlayers, setNotification]);
 
     return (
         <Box sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
@@ -250,6 +305,7 @@ function AllFilesPage() {
                     totalCount={files.length}
                     onSelectAll={handleSelectAll}
                     onAction={handleFileAction}
+                    onOpenAll={handleOpenAll}
                 />
             )}
 

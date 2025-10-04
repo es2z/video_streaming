@@ -260,9 +260,14 @@ function VideoPlayer({ file, onClose, onNext, onPrev, isMultiPlayer = false }) {
         return () => video.removeEventListener("timeupdate", handleTimeUpdate);
     }, [abLoop]);
 
-    // タップ処理（ダブルタップでスキップ/巻き戻し）
+    // タップ/クリック処理（ダブルタップでスキップ/巻き戻し、シングルタップで再生/停止）
     const handleTap = useCallback(
         (e) => {
+            // コントロール領域のクリックは無視
+            if (e.target.closest('.video-player-controls')) {
+                return;
+            }
+
             const rect = containerRef.current?.getBoundingClientRect();
             if (!rect) return;
 
@@ -273,7 +278,7 @@ function VideoPlayer({ file, onClose, onNext, onPrev, isMultiPlayer = false }) {
             const DOUBLE_TAP_DELAY = 300;
 
             if (now - lastTap < DOUBLE_TAP_DELAY) {
-                // ダブルタップ
+                // ダブルタップ/ダブルクリック
                 if (tapTimer) {
                     clearTimeout(tapTimer);
                     setTapTimer(null);
@@ -303,13 +308,14 @@ function VideoPlayer({ file, onClose, onNext, onPrev, isMultiPlayer = false }) {
                         severity: "info",
                     });
                 } else {
-                    // 中央 - 再生/一時停止
+                    // 中央 - 再生/一時停止（ダブルクリック時も）
                     togglePlay();
                 }
             } else {
-                // シングルタップ（遅延実行）
+                // シングルタップ/クリック - 中央なら再生/停止
                 const timer = setTimeout(() => {
-                    if (relativeX > 0.3 && relativeX < 0.7) {
+                    // 中央35-65%の範囲で再生/停止
+                    if (relativeX >= 0.35 && relativeX <= 0.65) {
                         togglePlay();
                     }
                 }, DOUBLE_TAP_DELAY);
@@ -326,6 +332,7 @@ function VideoPlayer({ file, onClose, onNext, onPrev, isMultiPlayer = false }) {
             togglePlay,
             lastTap,
             tapTimer,
+            setNotification,
         ]
     );
 
@@ -344,8 +351,38 @@ function VideoPlayer({ file, onClose, onNext, onPrev, isMultiPlayer = false }) {
         }
     }, []);
 
-    // ピンチズーム処理
+    // ズーム処理
     const [scale, setScale] = useState(1);
+    const [zoomOrigin, setZoomOrigin] = useState({ x: 50, y: 50 });
+
+    // マウスホイールでズーム
+    const handleWheel = useCallback((e) => {
+        e.preventDefault();
+
+        if (isMultiPlayer) {
+            // PIPモードではプレイヤー全体のサイズを変更（MultiPlayerContainerで処理）
+            return;
+        }
+
+        // 通常モードでは動画をズーム
+        const rect = containerRef.current?.getBoundingClientRect();
+        if (!rect) return;
+
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+
+        setScale((prevScale) => {
+            const delta = e.deltaY > 0 ? -0.1 : 0.1;
+            const newScale = Math.max(1, Math.min(3, prevScale + delta));
+            if (newScale !== prevScale) {
+                setZoomOrigin({ x, y });
+            }
+            return newScale;
+        });
+    }, [isMultiPlayer]);
+
+    // ピンチズーム処理
+    const [pinchDistance, setPinchDistance] = useState(null);
     const handlePinch = useCallback((e) => {
         if (e.touches && e.touches.length === 2) {
             const touch1 = e.touches[0];
@@ -355,9 +392,19 @@ function VideoPlayer({ file, onClose, onNext, onPrev, isMultiPlayer = false }) {
                 touch2.clientY - touch1.clientY
             );
 
-            // ピンチズームの実装
-            // ここでは簡略化
+            if (pinchDistance !== null) {
+                const delta = distance - pinchDistance;
+                setScale((prevScale) => {
+                    const newScale = Math.max(1, Math.min(3, prevScale + delta * 0.01));
+                    return newScale;
+                });
+            }
+            setPinchDistance(distance);
         }
+    }, [pinchDistance]);
+
+    const handleTouchEnd = useCallback(() => {
+        setPinchDistance(null);
     }, []);
 
     // ファイル名変更
@@ -401,7 +448,11 @@ function VideoPlayer({ file, onClose, onNext, onPrev, isMultiPlayer = false }) {
                 cursor: showControls ? "default" : "none",
             }}
             onMouseMove={handleMouseMove}
+            onClick={handleTap}
             onTouchStart={handleTap}
+            onTouchMove={handlePinch}
+            onTouchEnd={handleTouchEnd}
+            onWheel={handleWheel}
             {...bindLongPress()}
         >
             {/* ビデオ要素 */}
@@ -413,6 +464,7 @@ function VideoPlayer({ file, onClose, onNext, onPrev, isMultiPlayer = false }) {
                     height: "100%",
                     objectFit: playerSettings.aspectRatioFit,
                     transform: `scale(${scale})`,
+                    transformOrigin: `${zoomOrigin.x}% ${zoomOrigin.y}%`,
                 }}
                 loop={playerSettings.loop && !abLoop.enabled}
                 onPlay={() => setPlaying(true)}

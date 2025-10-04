@@ -22,6 +22,7 @@ import {
     Label as TagIcon,
     Folder as FolderIcon,
     MoreVert as MoreIcon,
+    PlayArrow as PlayIcon,
 } from "@mui/icons-material";
 import { useAtom } from "jotai";
 import { useLocation } from "react-router-dom";
@@ -33,6 +34,7 @@ function FileSelectionBar({
     totalCount,
     onSelectAll,
     onAction,
+    onOpenAll,
 }) {
     const location = useLocation();
     const [selectedFiles, setSelectedFiles] = useAtom(selectedFilesAtom);
@@ -94,6 +96,19 @@ function FileSelectionBar({
                 >
                     全選択
                 </Button>
+
+                {/* すべて開くボタン */}
+                {onOpenAll && (
+                    <Button
+                        size="small"
+                        variant="contained"
+                        startIcon={<PlayIcon />}
+                        onClick={onOpenAll}
+                        disabled={selectedCount === 0}
+                    >
+                        すべて開く
+                    </Button>
+                )}
 
                 <Divider orientation="vertical" flexItem />
 

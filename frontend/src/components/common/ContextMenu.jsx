@@ -37,6 +37,7 @@ import {
     selectedFilesAtom,
 } from "@store/atoms";
 import { fileAPI, folderAPI } from "@services/api";
+import TagEditDialog from "@components/dialogs/TagEditDialog";
 
 function ContextMenu() {
     const location = useLocation();
@@ -185,8 +186,8 @@ function ContextMenu() {
 
     // タグ追加
     const handleAddTags = () => {
-        setTagDialog(true);
         handleClose();
+        setTagDialog(true);
     };
 
     // メニュー項目の判定
@@ -325,22 +326,18 @@ function ContextMenu() {
                 </DialogActions>
             </Dialog>
 
-            {/* タグ追加ダイアログ（簡略版） */}
-            <Dialog
+            {/* タグ追加ダイアログ */}
+            <TagEditDialog
                 open={tagDialog}
                 onClose={() => setTagDialog(false)}
-                maxWidth="sm"
-                fullWidth
-            >
-                <DialogTitle>タグを追加</DialogTitle>
-                <DialogContent>
-                    {/* タグ追加UIを実装 */}
-                    <Typography>タグ追加機能は後で実装します</Typography>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => setTagDialog(false)}>閉じる</Button>
-                </DialogActions>
-            </Dialog>
+                files={
+                    selectedFiles.length > 0
+                        ? selectedFiles
+                        : contextMenu.file
+                        ? [contextMenu.file]
+                        : []
+                }
+            />
         </>
     );
 }

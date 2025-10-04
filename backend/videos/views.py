@@ -120,6 +120,87 @@ class FileViewSet(viewsets.ModelViewSet):
         serializer = FileListSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
 
+    @action(detail=True, methods=['post'], url_path='mark_deleted')
+    def mark_deleted(self, request, pk=None):
+        """ファイルに削除フラグを付与"""
+        file = self.get_object()
+        file.mark_as_deleted()
+        return Response({'status': 'deleted'})
+
+    @action(detail=True, methods=['post'], url_path='restore')
+    def restore(self, request, pk=None):
+        """削除フラグを解除"""
+        file = self.get_object()
+        file.restore()
+        return Response({'status': 'restored'})
+
+    @action(detail=True, methods=['post'], url_path='add_to_folder')
+    def add_to_folder(self, request, pk=None):
+        """フォルダに追加"""
+        file = self.get_object()
+        folder_id = request.data.get('folder_id')
+        if not folder_id:
+            return Response({'error': 'folder_id is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            folder = Folder.objects.get(id=folder_id)
+            file.add_to_folder(folder)
+            return Response({'status': 'added to folder'})
+        except Folder.DoesNotExist:
+            return Response({'error': 'Folder not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    @action(detail=True, methods=['post'], url_path='remove_from_folder')
+    def remove_from_folder(self, request, pk=None):
+        """フォルダから削除"""
+        file = self.get_object()
+        folder_id = request.data.get('folder_id')
+        if not folder_id:
+            return Response({'error': 'folder_id is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            folder = Folder.objects.get(id=folder_id)
+            file.remove_from_folder(folder)
+            return Response({'status': 'removed from folder'})
+        except Folder.DoesNotExist:
+            return Response({'error': 'Folder not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    @action(detail=True, methods=['post'], url_path='add_tags')
+    def add_tags(self, request, pk=None):
+        """タグを追加"""
+        file = self.get_object()
+        tag_names = request.data.get('tag_names', [])
+        if not tag_names:
+            return Response({'error': 'tag_names is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        added_tags = []
+        for tag_name in tag_names:
+            tag = file.add_tag(tag_name)
+            added_tags.append(tag.tag_name)
+
+        return Response({'status': 'tags added', 'tags': added_tags})
+
+    @action(detail=True, methods=['post'], url_path='remove_tags')
+    def remove_tags(self, request, pk=None):
+        """タグを削除"""
+        file = self.get_object()
+        tag_names = request.data.get('tag_names', [])
+        if not tag_names:
+            return Response({'error': 'tag_names is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        for tag_name in tag_names:
+            file.remove_tag(tag_name)
+
+        return Response({'status': 'tags removed'})
+
+    @action(detail=False, methods=['post'], url_path='bulk_action')
+    def bulk_action(self, request):
+        """一括操作"""
+        serializer = FileBulkActionSerializer(data=request.data)
+        if serializer.is_valid():
+            result = serializer.perform()
+            return Response(result)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class FolderViewSet(viewsets.ModelViewSet):
     """フォルダビューセット"""
@@ -137,12 +218,12 @@ class FolderViewSet(viewsets.ModelViewSet):
             for node in nodes:
                 folders.append({
                     'id': node.id,
-                    'name': node.name,
+                    'folder_name': node.folder_name,
                     'children': build_tree(node),
                     'file_count': node.file_count
                 })
             return folders
-        
+
         tree = build_tree()
         return Response(tree)
 

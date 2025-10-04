@@ -33,6 +33,7 @@ import {
 import SearchBar from "@components/common/SearchBar";
 import ViewToggle from "@components/common/ViewToggle";
 import MultiSelectToggle from "@components/common/MultiSelectToggle";
+import PlayerModeToggle from "@components/common/PlayerModeToggle";
 import SettingsDialog from "@components/dialogs/SettingsDialog";
 
 import { loadingAtom, notificationAtom } from "@store/atoms";
@@ -264,6 +265,7 @@ function MainLayout({ children }) {
                             gap: 1,
                         }}
                     >
+                        <PlayerModeToggle />
                         <MultiSelectToggle />
                         <ViewToggle />
                         <Tooltip title="強制スキャン">

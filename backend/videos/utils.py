@@ -257,10 +257,9 @@ def scan_video_directory() -> ScanHistory:
                         errors.append(f"Failed to calculate MD5 for {file_path}")
                         continue
 
-                    # 同サイズ・同MD5 の既存があれば duplicate_flag
-                    is_dup = File.objects.filter(
-                        file_size=file_size, md5_hash=md5_hash
-                    ).exists()
+                    # 新規ファイルは初期状態でduplicate_flag=False
+                    # 重複検出は後でcheck_and_mark_duplicates()で一括処理
+                    is_dup = False
 
                     info = get_video_info(file_path)
 
@@ -325,9 +324,14 @@ def scan_video_directory() -> ScanHistory:
 def check_and_mark_duplicates() -> int:
     """
     すべてのファイルの重複をチェックして duplicate_flag を更新
+    同じサイズ・同じMD5のファイルが2つ以上ある場合のみ重複とマーク
     """
     from django.db.models import Count
 
+    # まず全ファイルの重複フラグをクリア
+    File.objects.all().update(duplicate_flag=False)
+
+    # ファイルサイズとMD5ハッシュが同じファイルのグループを取得（2つ以上）
     groups = (
         File.objects.values("file_size", "md5_hash")
         .annotate(count=Count("id"))
@@ -336,6 +340,7 @@ def check_and_mark_duplicates() -> int:
 
     marked = 0
     for g in groups:
+        # このグループに属するファイルをすべて重複としてマーク
         updated = File.objects.filter(
             file_size=g["file_size"],
             md5_hash=g["md5_hash"],

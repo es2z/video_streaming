@@ -131,10 +131,13 @@ function FoldersPage() {
         if (!newFolderName.trim()) return;
 
         try {
-            await folderAPI.createFolder({
+            const payload = {
                 folder_name: newFolderName,
-                parent_id: folderId || null,
-            });
+            };
+            if (folderId) {
+                payload.parent = folderId;
+            }
+            await folderAPI.createFolder(payload);
 
             setNotification({
                 open: true,

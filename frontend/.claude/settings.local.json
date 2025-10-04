@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/dev/video_streaming/**)",
+      "Bash(cat:*)",
+      "Bash(python manage.py shell:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
